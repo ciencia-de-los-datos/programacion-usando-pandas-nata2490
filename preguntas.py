@@ -173,7 +173,13 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    dataf=pd.DataFrame({'_c2':(tbl0.groupby('_c1')['_c2'])})
+    dataf1=pd.DataFrame({'_c1':dataf['_c2'].map(lambda x: x[0])})
+    dataf2=pd.DataFrame({'_c2':dataf['_c2'].map(lambda x: ':'.join(map(str, sorted(x[1]))))})
+    dataf2= dataf2.rename(columns={'_c2':'_c1'})
+    dataf1= dataf1.rename(columns={'_c1':'_c0'})
+    
+    return pd.concat([dataf1, dataf2], axis=1)
 
 
 def pregunta_11():
@@ -192,7 +198,14 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    dataf=pd.DataFrame({'_c0':(tbl1.groupby('_c0')['_c4'])})
+    #dataf
+    dataf1=pd.DataFrame({'_c0':dataf['_c0'].map(lambda x: x[0])})
+    #dataf1
+    dataf2=pd.DataFrame({'_c4':dataf['_c0'].map(lambda x: ','.join(map(str, sorted(x[1]))))})
+    #dataf2
+    
+    return pd.concat([dataf1, dataf2], axis=1)
 
 
 def pregunta_12():
@@ -210,7 +223,10 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tbl2['_c5b'] = tbl2['_c5b'].apply(lambda x: str(x))
+    tbl2['_c5'] = tbl2['_c5a'].str.cat(tbl2['_c5b'], sep =":")
+    df_new3= tbl2.groupby(['_c0'], as_index=False).agg({'_c5': ','.join})
+    return df_new3
 
 
 def pregunta_13():
@@ -229,5 +245,5 @@ def pregunta_13():
     """
     new_data=pd.merge(tbl0, tbl2, how='outer')
     sum_new_data= new_data.groupby(by=['_c1'])['_c5b'].sum()
-    sum_new_data
+    
     return new_data
