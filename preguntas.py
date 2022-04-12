@@ -174,12 +174,12 @@ def pregunta_10():
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
     dataf=pd.DataFrame({'_c2':(tbl0.groupby('_c1')['_c2'])})
-    dataf1=pd.DataFrame({'_c1':dataf['_c2'].map(lambda x: x[0])})
-    dataf2=pd.DataFrame({'_c2':dataf['_c2'].map(lambda x: ':'.join(map(str, sorted(x[1]))))})
-    dataf2= dataf2.rename(columns={'_c2':'_c1'})
-    dataf1= dataf1.rename(columns={'_c1':'_c0'})
+    dataf1=pd.DataFrame({'_c0':dataf['_c2'].map(lambda x: x[0])})
+    dataf2=pd.DataFrame({'_c1':dataf['_c2'].map(lambda x: ':'.join(map(str, sorted(x[1]))))})
+    data_new=pd.concat([dataf1, dataf2], axis=1)
+    data_new.set_index('_c0', inplace = True)
     
-    return pd.concat([dataf1, dataf2], axis=1)
+    return data_new
 
 
 def pregunta_11():
@@ -199,12 +199,9 @@ def pregunta_11():
     39   39    a,d,f
     """
     dataf=pd.DataFrame({'_c0':(tbl1.groupby('_c0')['_c4'])})
-    #dataf
     dataf1=pd.DataFrame({'_c0':dataf['_c0'].map(lambda x: x[0])})
-    #dataf1
     dataf2=pd.DataFrame({'_c4':dataf['_c0'].map(lambda x: ','.join(map(str, sorted(x[1]))))})
-    #dataf2
-    
+        
     return pd.concat([dataf1, dataf2], axis=1)
 
 
@@ -246,4 +243,4 @@ def pregunta_13():
     new_data=pd.merge(tbl0, tbl2, how='outer')
     sum_new_data= new_data.groupby(by=['_c1'])['_c5b'].sum()
     
-    return new_data
+    return sum_new_data
