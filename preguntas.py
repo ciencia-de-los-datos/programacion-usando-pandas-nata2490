@@ -173,13 +173,12 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    dataf=pd.DataFrame({'_c2':(tbl0.groupby('_c1')['_c2'])})
-    dataf1=pd.DataFrame({'_c0':dataf['_c2'].map(lambda x: x[0])})
-    dataf2=pd.DataFrame({'_c1':dataf['_c2'].map(lambda x: ':'.join(map(str, sorted(x[1]))))})
-    data_new=pd.concat([dataf1, dataf2], axis=1)
-    data_new.set_index('_c0', inplace = True)
+    tbl0['_c2'] = tbl0['_c2'].apply(lambda x: str(x))
+    tbl00 = tbl0.sort_values(by=['_c1','_c2'])
+    df_new= tbl00.groupby(['_c1'], as_index=False, sort=True).agg({'_c2': ':'.join})
+    df_new= df_new.rename(columns={'_c1':'_c0', '_c2':'_c1'})
     
-    return data_new
+    return df_new
 
 
 def pregunta_11():
@@ -222,7 +221,9 @@ def pregunta_12():
     """
     tbl2['_c5b'] = tbl2['_c5b'].apply(lambda x: str(x))
     tbl2['_c5'] = tbl2['_c5a'].str.cat(tbl2['_c5b'], sep =":")
+    tbl2 = tbl2.sort_values(by=['_c5'])
     df_new3= tbl2.groupby(['_c0'], as_index=False).agg({'_c5': ','.join})
+    
     return df_new3
 
 
