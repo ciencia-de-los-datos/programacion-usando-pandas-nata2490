@@ -219,7 +219,7 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    tbl2['_c5b'] = tbl2['_c5b'].apply(lambda x: str(x))
+    tbl2['_c5b'].apply(lambda x: str(x))
     tbl2['_c5'] = tbl2['_c5a'].str.cat(tbl2['_c5b'], sep =":")
     tbl2 = tbl2.sort_values(by=['_c5'])
     df_new3= tbl2.groupby(['_c0'], as_index=False).agg({'_c5': ','.join})
